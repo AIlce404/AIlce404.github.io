@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="2026-05-07学习了 Memory，内容包含1）string的本质 | 即char *s中s是指某字符参数第一个字节的地址，*是解引用，理解为该地址指向的第一个字符,因此char 本身是对*s的一种数据定义,这也是字符串的起点,而*(s+i)与数组s[i]基本上是一样的,数组下标本质上就是一次加法后的解引用。因此s[i]和i[s]是一样的,因为指针运算.而s本身的地址与其数值不是同一个。2）">
+  <meta name="description" content="2026-05-08学习Data Structures  动态分配 | realoc(地址，大小) 用于对某一个静态地址重新分配内存，如果该地址紧跟的内存有空间，则直接在其后面加入，如果没有，则重新分配一个指定大小的内存空间，将原地址的内容copy过来，同时free原地址的所指向的内存空间。因此还需要重新将新的内存地址赋给原指针 字典(dictionary) | 保持一个结构内存在key和valu">
 <meta property="og:type" content="website">
 <meta property="og:title" content="碎碎念">
 <meta property="og:url" content="http://example.com/diary/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="2026-05-07学习了 Memory，内容包含1）string的本质 | 即char *s中s是指某字符参数第一个字节的地址，*是解引用，理解为该地址指向的第一个字符,因此char 本身是对*s的一种数据定义,这也是字符串的起点,而*(s+i)与数组s[i]基本上是一样的,数组下标本质上就是一次加法后的解引用。因此s[i]和i[s]是一样的,因为指针运算.而s本身的地址与其数值不是同一个。2）">
+<meta property="og:description" content="2026-05-08学习Data Structures  动态分配 | realoc(地址，大小) 用于对某一个静态地址重新分配内存，如果该地址紧跟的内存有空间，则直接在其后面加入，如果没有，则重新分配一个指定大小的内存空间，将原地址的内容copy过来，同时free原地址的所指向的内存空间。因此还需要重新将新的内存地址赋给原指针 字典(dictionary) | 保持一个结构内存在key和valu">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-05-07T16:25:37.480Z">
-<meta property="article:modified_time" content="2026-05-07T16:25:37.480Z">
+<meta property="article:published_time" content="2026-05-08T09:23:28.969Z">
+<meta property="article:modified_time" content="2026-05-08T09:23:28.969Z">
 <meta property="article:author" content="Chen YQ">
 <meta name="twitter:card" content="summary">
 
@@ -174,7 +174,26 @@
       
       
       <div class="post-body">
-          <h2 id="2026-05-07"><a href="#2026-05-07" class="headerlink" title="2026-05-07"></a>2026-05-07</h2><p>学习了 Memory，内容包含<br>1）string的本质 | 即char *s中s是指某字符参数第一个字节的地址，*是解引用，理解为该地址指向的第一个字符,因此char 本身是对*s的一种数据定义,这也是字符串的起点,而*(s+i)与数组s[i]基本上是一样的,数组下标本质上就是一次加法后的解引用。因此s[i]和i[s]是一样的,因为指针运算.而s本身的地址与其数值不是同一个。<br>2）指针 | 我对指针的理解是一个储存另一变量地址的变量，他在形态上展示为一个内存空间指向变量。因此其记录的是地址而非变量数值本身。当然具体是一种行为还是地址要看语境<br>3）字符串比较，理解指针之后就能明白，比较char *s与char *j时,s和j其实是指字符第一个字节的地址,这俩一般情况下必然不同.因此要比较的应该是解引用的第一个字节即第一个字符.同时比较 *s 和 *j 只能比较第一个字符。真正的字符串比较（如 strcmp）实际上是一个循环：比较第一个字节，一样？再看第二个，直到撞见 \0 为止。<br>4）malloc的使用 | 对其的理解是贷款内存空间，提前指定多大数量的内存空间以给后续进操作进行铺垫，最后需要释放，不然会出现内存泄露或被占用。常可作为缓冲区。<br>5）NULL | ，空值，其地址永远为0x0。如果内存空间不足了，通过malloc贷款就无法得到足够的内存空间而得到NULL。而NUL是为了让字符串函数（如 strlen）知道在哪停。 NULL 是为了表示“这个指针现在没指向任何地方”。溢出并不会被 NUL 终止，溢出是由于你写过了界，NUL 只是字符串的边界标记。<br>6）未初始化指针，其内容是内存原有的垃圾数值，因此会指向内存任意空间，在系统干预下，会终止程序<br>7）堆、栈 | 堆（heap）就是指贷款的内存空间，栈（stack）是指引用函数所使用的空间，栈是从高地址向低地址长，堆是从低地址向高地址长,对一个从上到下地址增长的内存空间，函数的执行是从下向上的，因此每个函数直接的参数其实是一种不同地址内数据的copy，即函数调用时产生一个新的“帧（Frame）”，而这个帧里所有的局部变量都是“副本”。接入参数不会改变各个函数各自内的参数变化，而函数参数本身的地址没有变化。因此通过指针才能通过传入对不同函数内参数的地址，通过解引用修改原地址的参数，实现函数之间的参数修改，这也是为什么大括号{}内的参数互不干扰.<br>8）堆溢出、栈溢出、缓冲溢出 | 内存泄漏（Memory Leak）特指 malloc 了但不 free，导致堆空间被占满。而堆栈溢出（Stack&#x2F;Heap Overflow）是指它们长得太快，“撞”在一起了。而缓冲溢出实际上就是指提前指定的内存空间无法存储大量的数据导致，例如数组等填入过多的数值<br>9）f命令 | 来自于stdio.h，用于file I&#x2F;O的执行，其都是通过地址进行操作，例如FILE *file &#x3D; fopen{“1.csv”,”w”}，指指向文件的内存地址,FILE是一种结构体，记录文件在磁盘的什么位置，现在读到第几个字节了（偏移量）和有没有读错。通过修改对地址内容进行修改,已实现对文件的修改,还有其他很多指令fopen,fclose,fprintf,fwrite等等</p>
+          <h2 id="2026-05-08"><a href="#2026-05-08" class="headerlink" title="2026-05-08"></a>2026-05-08</h2><p>学习Data Structures</p>
+<ul>
+<li>动态分配 | realoc(地址，大小) 用于对某一个静态地址重新分配内存，如果该地址紧跟的内存有空间，则直接在其后面加入，如果没有，则重新分配一个指定大小的内存空间，将原地址的内容copy过来，同时free原地址的所指向的内存空间。因此还需要重新将新的内存地址赋给原指针</li>
+<li>字典(dictionary) | 保持一个结构内存在key和value，使得其一一对应</li>
+<li>链表（linked list） 以及-&gt;的使用 | 链表数据结构是一个包含内容和下一个内容地址的二维结构（但是并不是二维数据结构，只是代码上分层像二维），而链表本身是一个指向第一个链表变量地址的指针.因此要连接链表，可以引入一个临时指针用于记录各个链表内容的地址，并将下一个内容指针重置化为NULL，将临时指针赋值给链表指针，而对于第二个变量，需要将下一个指针赋值为list，将临时指针赋值给list，以实现串起来.对于链表的插入行为，时间复杂度实际上为O(1),而对于其他任何操作，时间复杂度为O(n)。同时还存在双向链表，可以让代码变得简单，但是时间复杂度不变</li>
+<li>树（tree） | 第一个二维数据结构 。即非线性数据结构（分层结构）特殊情况下，树可能会变成一个链表。<ul>
+<li>二叉搜索树 | 时间复杂度log2（n） 一个区块包含一个整数和2个指针。</li>
+</ul>
+</li>
+<li>哈希 | 形式上将一个无限值域的领域进行处理并将其映射到一个有限值域的范围内。<ul>
+<li>哈希表 | 将key与value关联。是链表与数组的结合，即一个包含链表的指针数组。如果哈希表比较少，参数可能会发生碰撞，导致链表长度增加，时间复杂度增加，因扩大哈希表能缓解这个问题。但是会占用大量空间， 因此一个好的哈希表的时间复杂度应该是O(N&#x2F;K)，其中N是变量数量，K是表头的数量</li>
+</ul>
+</li>
+<li>检索(retrieval) | tree+array <del>发音也可以是retreeval</del><ul>
+<li>字典树（trie） | 统计和排序大量的字符串 （但不仅限于字符串），例如查找ANT，索引A<del>B中挑选A，通过指针找到下一个数组索引A</del>B中的N，在通过指针找到T。时间复杂度为O(3),因此其能做到时间复杂度为O(L)。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2026-05-07"><a href="#2026-05-07" class="headerlink" title="2026-05-07"></a>2026-05-07</h2><p>学习了 Memory，内容包含<br>1）string的本质 | 即char *s中s是指某字符参数第一个字节的地址，*是解引用，理解为该地址指向的第一个字符,因此char 本身是对*s的一种数据定义,这也是字符串的起点,而*(s+i)与数组s[i]基本上是一样的,数组下标本质上就是一次加法后的解引用。因此s[i]和i[s]是一样的,因为指针运算.而s本身的地址与其数值不是同一个。<br>2）指针 | 我对指针的理解是一个储存另一变量地址的变量，他在形态上展示为一个内存空间指向变量。因此其记录的是地址而非变量数值本身。当然具体是一种行为还是地址要看语境<br>3）字符串比较，理解指针之后就能明白，比较char *s与char *j时,s和j其实是指字符第一个字节的地址,这俩一般情况下必然不同.因此要比较的应该是解引用的第一个字节即第一个字符.同时比较 *s 和 *j 只能比较第一个字符。真正的字符串比较（如 strcmp）实际上是一个循环：比较第一个字节，一样？再看第二个，直到撞见 \0 为止。<br>4）malloc的使用 | 对其的理解是贷款内存空间，提前指定多大数量的内存空间以给后续进操作进行铺垫，最后需要释放，不然会出现内存泄露或被占用。常可作为缓冲区。<br>5）NULL | ，空值，其地址永远为0x0。如果内存空间不足了，通过malloc贷款就无法得到足够的内存空间而得到NULL。而NUL是为了让字符串函数（如 strlen）知道在哪停。 NULL 是为了表示“这个指针现在没指向任何地方”。溢出并不会被 NUL 终止，溢出是由于你写过了界，NUL 只是字符串的边界标记。<br>6）未初始化指针，其内容是内存原有的垃圾数值，因此会指向内存任意空间，在系统干预下，会终止程序<br>7）堆、栈 | 堆（heap）就是指贷款的内存空间，栈（stack）是指引用函数所使用的空间，栈是从高地址向低地址长，堆是从低地址向高地址长,对一个从上到下地址增长的内存空间，函数的执行是从下向上的，因此每个函数直接的参数其实是一种不同地址内数据的copy，即函数调用时产生一个新的“帧（Frame）”，而这个帧里所有的局部变量都是“副本”。接入参数不会改变各个函数各自内的参数变化，而函数参数本身的地址没有变化。因此通过指针才能通过传入对不同函数内参数的地址，通过解引用修改原地址的参数，实现函数之间的参数修改，这也是为什么大括号{}内的参数互不干扰.<br>8）堆溢出、栈溢出、缓冲溢出 | 内存泄漏（Memory Leak）特指 malloc 了但不 free，导致堆空间被占满。而堆栈溢出（Stack&#x2F;Heap Overflow）是指它们长得太快，“撞”在一起了。而缓冲溢出实际上就是指提前指定的内存空间无法存储大量的数据导致，例如数组等填入过多的数值<br>9）f命令 | 来自于stdio.h，用于file I&#x2F;O的执行，其都是通过地址进行操作，例如FILE *file &#x3D; fopen{“1.csv”,”w”}，指指向文件的内存地址,FILE是一种结构体，记录文件在磁盘的什么位置，现在读到第几个字节了（偏移量）和有没有读错。通过修改对地址内容进行修改,已实现对文件的修改,还有其他很多指令fopen,fclose,fprintf,fwrite等等</p>
 <hr>
 <h2 id="2026-05-04"><a href="#2026-05-04" class="headerlink" title="2026-05-04"></a>2026-05-04</h2><p>学习了CS50 的algorithms，内容包含简单数据结构定义和数据处理的时间复杂度和几种排序的处理方式和复杂度的区别，引入递归的方法，比较选择排序（从小排）、冒泡排序（大数据上浮）、归并排序（分而治之）的不同，不过作业还没做&gt;.&lt;</p>
 <hr>
@@ -248,7 +267,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-05-07"><span class="nav-number">1.</span> <span class="nav-text">2026-05-07</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-05-04"><span class="nav-number">2.</span> <span class="nav-text">2026-05-04</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-05-03"><span class="nav-number">3.</span> <span class="nav-text">2026-05-03</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-04-29"><span class="nav-number">4.</span> <span class="nav-text">2026-04-29</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-04-27"><span class="nav-number">5.</span> <span class="nav-text">2026-04-27</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-04-26"><span class="nav-number">6.</span> <span class="nav-text">2026-04-26</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-05-08"><span class="nav-number">1.</span> <span class="nav-text">2026-05-08</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-05-07"><span class="nav-number">2.</span> <span class="nav-text">2026-05-07</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-05-04"><span class="nav-number">3.</span> <span class="nav-text">2026-05-04</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-05-03"><span class="nav-number">4.</span> <span class="nav-text">2026-05-03</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-04-29"><span class="nav-number">5.</span> <span class="nav-text">2026-04-29</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-04-27"><span class="nav-number">6.</span> <span class="nav-text">2026-04-27</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026-04-26"><span class="nav-number">7.</span> <span class="nav-text">2026-04-26</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
